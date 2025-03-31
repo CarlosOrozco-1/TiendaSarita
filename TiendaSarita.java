@@ -88,6 +88,7 @@ public class TiendaSarita {
             System.out.println("El monto minimo de compra para descuentos es de: Q. " + mDescuento);
             System.out.println("Prueba de commit #2");
             System.out.println("Prueba de commit #3");
+            System.out.println("Prueba de commit #4");
         }
        
     }
