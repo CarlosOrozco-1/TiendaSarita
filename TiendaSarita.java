@@ -86,6 +86,7 @@ public class TiendaSarita {
             System.out.println("No se realizo ningún tipo de descuento");
             System.out.println("Le invitamos a hacerse miembro para obtener beneficios");
             System.out.println("El monto minimo de compra para descuentos es de: Q. " + mDescuento);
+            System.out.println("Prueba de commit #2");
         }
        
     }
