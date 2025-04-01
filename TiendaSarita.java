@@ -103,5 +103,6 @@ public class TiendaSarita {
         resultFrame.add(scrollPane);
         resultFrame.setLocationRelativeTo(null);
         resultFrame.setVisible(true);
+         System.out.println("Prueba de texto en este apartado");
     }
 }
