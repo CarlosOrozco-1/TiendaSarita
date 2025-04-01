@@ -1,109 +1,107 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- */
-
 package com.mycompany.tiendasarita;
 
-/**
- *
- * @author Carlos Orozco
- */
-
-
-import java.util.Scanner;
-
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class TiendaSarita {
-
     public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new TiendaSarita().createAndShowGUI());
+    }
+
+    private void createAndShowGUI() {
+        JFrame frame = new JFrame("Tienda Sarita");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(400, 300);
+        frame.setLayout(new GridBagLayout());
         
-        Scanner datos = new Scanner(System.in);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+
+        JLabel lblCliente = new JLabel("Nombre del Cliente:");
+        JTextField txtCliente = new JTextField(15);
+        JLabel lblMembresia = new JLabel("¿Tiene membresía?");
+        JCheckBox chkMembresia = new JCheckBox("Sí");
+        JLabel lblMontoCompra = new JLabel("Monto de la Compra:");
+        JTextField txtMontoCompra = new JTextField(10);
+        JButton btnCalcular = new JButton("Calcular Descuento");
         
-        //Declaración de variables
-        float mDescuento = 1250; //monto descuento
-        double descuento1 = 0.1;  //descuento1 del 10%
-        double descuento2 = 0.05; //descuento2 del 5%
-        double total; // almacena el resultado de los descuentos
-        var moneda = " Q ";
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        frame.add(lblCliente, gbc);
+        gbc.gridx = 1;
+        frame.add(txtCliente, gbc);
         
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        frame.add(lblMembresia, gbc);
+        gbc.gridx = 1;
+        frame.add(chkMembresia, gbc);
         
-        //Toma de datos
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        frame.add(lblMontoCompra, gbc);
+        gbc.gridx = 1;
+        frame.add(txtMontoCompra, gbc);
         
-        System.out.print("Nombre del Cliente: ");
-        var cliente = datos.nextLine();
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.gridwidth = 2;
+        frame.add(btnCalcular, gbc);
         
-        System.out.print("Tiene membresia Si / No: ");
-        var mVip = datos.nextLine() . trim() . toLowerCase();
+        btnCalcular.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                calcularDescuento(txtCliente.getText(), chkMembresia.isSelected(), txtMontoCompra.getText());
+            }
+        });
         
-        boolean esMiembro = mVip.equals("sí") || mVip.equals("si");
-        
-        System.out.print("Ingrese el monto de la Compra: Q.");
-        float montoCompra = datos.nextFloat();
-        
-        // Operaciones a realizar 
-        
-        if (montoCompra >= mDescuento && esMiembro == true) {
-            
-            //Aplicar desucuento del 10%
-            var desc1 = montoCompra * descuento1; // genera el total de descuento descuento
-            desc1 = Math.round(desc1*100.0) / 100.0; //redondear el total del descuento
-            total = montoCompra - desc1; // Resta el total de decuento en la compra y almacena el resultado
-            total = Math.round(total*100.0) / 100.0; // redondear el total para dos decimales
-            
-            mostraDatos(cliente, esMiembro, montoCompra); //carga el modulo con los datos del cliente
-            
-            System.out.println("\n----------------------------------------------------------------------------------------");
-            
-            System.out.printf("%-15s \t %-15s \t %-15s \t %-15s \t", "Monto Compra","%Descuento","Total Descuento", "Total");
-            System.out.println("\n----------------------------------------------------------------------------------------");
-            System.out.printf("%-15s \t %-15s \t %-15s \t %-15s \t", moneda+montoCompra," 10%",moneda+desc1,moneda+total);
-            System.out.println("\n----------------------------------------------------------------------------------------");
-        } 
-        else if(montoCompra >= mDescuento | esMiembro == true){
-            
-            //Aplicar desucuento del 5%
-            var desc1 = montoCompra * descuento2; // genera monto de descuento
-            desc1 = Math.round(desc1*100.0) / 100.0; //redondear el total del descuento
-            total = montoCompra - desc1; // suma el total de compra y realiza el descuento
-            total = Math.round(total*100.0) / 100.0; // redondear el total para dos decimales
-            
-            mostraDatos(cliente, esMiembro, montoCompra);
-            
-            System.out.printf("%-15s \t %-15s \t %-15s \t %-15s \t", "Monto Compra","%Descuento","Total Descuento", "Total");
-            System.out.println("\n----------------------------------------------------------------------------------------");
-            System.out.printf("%-15s \t %-15s \t %-15s \t %-15s \t",moneda+montoCompra," 5%",moneda+desc1,moneda+total);
-            System.out.println("\n----------------------------------------------------------------------------------------");
-            
-        }
-        else {
-            
-            mostraDatos(cliente, esMiembro, montoCompra);
-            
-            System.out.printf("%-15s \t %-15s \t %-15s \t %-15s \t", "Monto Compra","%Descuento","Total Descuento", "Total");
-            System.out.println("\n----------------------------------------------------------------------------------------");
-            System.out.printf("%-15s \t %-15s \t %-15s \t %-15s \t",moneda+montoCompra," 0%",moneda," 0 ",moneda+montoCompra);
-            System.out.println("\n----------------------------------------------------------------------------------------");
-            System.out.println("No se realizo ningún tipo de descuento");
-            System.out.println("Le invitamos a hacerse miembro para obtener beneficios");
-            System.out.println("El monto minimo de compra para descuentos es de: Q. " + mDescuento);
-        
-        }
-       
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }
     
-    //Mostrar datos en consola
-        public static void mostraDatos (String cliente, boolean esMiembro, float montoCompra){
+    private void calcularDescuento(String cliente, boolean esMiembro, String montoTexto) {
+        try {
+            float montoCompra = Float.parseFloat(montoTexto);
+            float mDescuento = 1250;
+            double descuento1 = 0.1;
+            double descuento2 = 0.05;
+            double total = montoCompra;
+            double descuentoAplicado = 0;
+            String porcentajeDescuento = "0%";
             
-        System.out.println("****Datos del cliente****");
-        System.out.println("Nombre del Cliente: " + cliente);
-        String respuesta = esMiembro ? "Si" : "No"; 
-        System.out.println("Tiene membresia: " + respuesta);
-        System.out.println("");
-        System.out.println("***Detalle de Compra***");
-        System.out.println("");    
-           
-        
-     
-        }   
+            if (montoCompra >= mDescuento && esMiembro) {
+                descuentoAplicado = montoCompra * descuento1;
+                porcentajeDescuento = "10%";
+            } else if (montoCompra >= mDescuento || esMiembro) {
+                descuentoAplicado = montoCompra * descuento2;
+                porcentajeDescuento = "5%";
+            }
+            total -= descuentoAplicado;
+            
+            mostrarResultado(cliente, montoCompra, porcentajeDescuento, descuentoAplicado, total);
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "Ingrese un monto válido", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
     
+    private void mostrarResultado(String cliente, float montoCompra, String porcentajeDescuento, double descuentoAplicado, double total) {
+        JFrame resultFrame = new JFrame("Detalle de Compra");
+        resultFrame.setSize(500, 200);
+        
+        String[] columnNames = {"Cliente", "Monto Compra", "% Descuento", "Total Descuento", "Total"};
+        Object[][] data = {
+            {cliente, "Q " + montoCompra, porcentajeDescuento, "Q " + descuentoAplicado, "Q " + total}
+        };
+        
+        JTable table = new JTable(new DefaultTableModel(data, columnNames));
+        JScrollPane scrollPane = new JScrollPane(table);
+        
+        resultFrame.add(scrollPane);
+        resultFrame.setLocationRelativeTo(null);
+        resultFrame.setVisible(true);
+    }
 }
